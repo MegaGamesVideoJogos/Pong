@@ -1,0 +1,85 @@
+[gd_scene load_steps=7 format=3 uid="uid://ci4bkka55q3nj"]
+
+[ext_resource type="PackedScene" uid="uid://b0wi381tdd3tg" path="res://player.tscn" id="1_nrbk3"]
+[ext_resource type="Script" path="res://Game.gd" id="1_vesqt"]
+[ext_resource type="PackedScene" uid="uid://bswxh6ym3f6a3" path="res://ball.tscn" id="2_7ypl5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6yjay"]
+size = Vector2(1207, 101)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mhli7"]
+size = Vector2(69, 831)
+
+[sub_resource type="SystemFont" id="SystemFont_1k7gt"]
+font_names = PackedStringArray("Arial")
+
+[node name="Node2D" type="Node2D"]
+script = ExtResource("1_vesqt")
+
+[node name="Top" type="Area2D" parent="."]
+position = Vector2(-3, 1)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Top"]
+position = Vector2(593.5, -40.5)
+shape = SubResource("RectangleShape2D_6yjay")
+
+[node name="Bottom" type="Area2D" parent="."]
+position = Vector2(-3, 739)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bottom"]
+position = Vector2(593.5, -40.5)
+shape = SubResource("RectangleShape2D_6yjay")
+
+[node name="Left" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left"]
+position = Vector2(-24.5, 323.5)
+shape = SubResource("RectangleShape2D_mhli7")
+
+[node name="Right" type="Area2D" parent="."]
+position = Vector2(1208, 0)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Right"]
+position = Vector2(-24.5, 323.5)
+shape = SubResource("RectangleShape2D_mhli7")
+
+[node name="Player" parent="." instance=ExtResource("1_nrbk3")]
+position = Vector2(128, 304)
+
+[node name="Player2" parent="." instance=ExtResource("1_nrbk3")]
+position = Vector2(1024, 304)
+side = "p2"
+
+[node name="Ball" parent="." instance=ExtResource("2_7ypl5")]
+position = Vector2(576, 324)
+
+[node name="Label" type="Label" parent="."]
+offset_left = 384.0
+offset_top = 64.0
+offset_right = 424.0
+offset_bottom = 90.0
+scale = Vector2(10.908, 5.881)
+theme_override_fonts/font = SubResource("SystemFont_1k7gt")
+text = "0"
+
+[node name="Label2" type="Label" parent="."]
+offset_left = 680.0
+offset_top = 64.0
+offset_right = 720.0
+offset_bottom = 90.0
+scale = Vector2(10.908, 5.881)
+theme_override_fonts/font = SubResource("SystemFont_1k7gt")
+text = "0"
+
+[connection signal="body_entered" from="Top" to="." method="_on_top_body_entered"]
+[connection signal="body_entered" from="Bottom" to="." method="_on_bottom_body_entered"]
+[connection signal="body_entered" from="Left" to="." method="_on_left_body_entered"]
+[connection signal="body_entered" from="Right" to="." method="_on_right_body_entered"]
