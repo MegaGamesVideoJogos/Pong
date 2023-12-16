@@ -1,0 +1,120 @@
+[gd_scene load_steps=15 format=3 uid="uid://ci4bkka55q3nj"]
+
+[ext_resource type="PackedScene" uid="uid://b0wi381tdd3tg" path="res://player.tscn" id="1_nrbk3"]
+[ext_resource type="Script" path="res://Game.gd" id="1_vesqt"]
+[ext_resource type="PackedScene" uid="uid://bswxh6ym3f6a3" path="res://ball.tscn" id="2_7ypl5"]
+[ext_resource type="FontFile" uid="uid://cghpis3damf0y" path="res://PressStart2P-Regular.ttf" id="4_i68d8"]
+[ext_resource type="AudioStream" uid="uid://bvjoqnf85n6pd" path="res://bgm.mp3" id="5_apnxy"]
+[ext_resource type="AudioStream" uid="uid://cy6yaucwfubad" path="res://paddle.mp3" id="5_b7k7q"]
+[ext_resource type="AudioStream" uid="uid://2ely3hu14q6b" path="res://wall.mp3" id="6_ykigm"]
+[ext_resource type="AudioStream" uid="uid://e41wmaq6v15j" path="res://score.mp3" id="7_gt41l"]
+
+[sub_resource type="SystemFont" id="SystemFont_1k7gt"]
+font_names = PackedStringArray("Arial")
+
+[sub_resource type="LabelSettings" id="LabelSettings_ig44h"]
+font = ExtResource("4_i68d8")
+font_size = 32
+
+[sub_resource type="LabelSettings" id="LabelSettings_2kimx"]
+font = ExtResource("4_i68d8")
+font_size = 32
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5fxi3"]
+size = Vector2(1152, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ntdqr"]
+size = Vector2(1152, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tbls1"]
+size = Vector2(1152, 568)
+
+[node name="Stage" type="Node2D"]
+script = ExtResource("1_vesqt")
+ball = ExtResource("2_7ypl5")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = -1
+scale = Vector2(0.25, 0.25)
+transform = Transform2D(0.25, 0, 0, 0.25, 0, 0)
+
+[node name="P1Score" type="Label" parent="UI"]
+offset_left = 512.0
+offset_top = 256.0
+offset_right = 653.0
+offset_bottom = 300.0
+scale = Vector2(10.908, 5.881)
+theme_override_fonts/font = SubResource("SystemFont_1k7gt")
+text = "0"
+label_settings = SubResource("LabelSettings_ig44h")
+horizontal_alignment = 2
+
+[node name="P2Score" type="Label" parent="UI"]
+offset_left = 2560.0
+offset_top = 256.0
+offset_right = 2701.0
+offset_bottom = 300.0
+scale = Vector2(10.908, 5.881)
+theme_override_fonts/font = SubResource("SystemFont_1k7gt")
+text = "0"
+label_settings = SubResource("LabelSettings_2kimx")
+
+[node name="WallTop" type="StaticBody2D" parent="."]
+collision_mask = 2
+
+[node name="ColorRect" type="ColorRect" parent="WallTop"]
+offset_right = 1152.0
+offset_bottom = 40.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallTop"]
+position = Vector2(576, 20)
+shape = SubResource("RectangleShape2D_5fxi3")
+
+[node name="WallBottom" type="StaticBody2D" parent="."]
+position = Vector2(0, 648)
+collision_mask = 2
+
+[node name="ColorRect" type="ColorRect" parent="WallBottom"]
+offset_top = -40.0
+offset_right = 1152.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="WallBottom"]
+position = Vector2(576, -20)
+shape = SubResource("RectangleShape2D_ntdqr")
+
+[node name="Field" type="Area2D" parent="."]
+position = Vector2(576, 320)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Field"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_tbls1")
+
+[node name="Player" parent="." instance=ExtResource("1_nrbk3")]
+position = Vector2(128, 304)
+
+[node name="Player2" parent="." instance=ExtResource("1_nrbk3")]
+position = Vector2(1024, 304)
+side = 1
+
+[node name="Ball" parent="." instance=ExtResource("2_7ypl5")]
+position = Vector2(576, 320)
+collision_mask = 1
+
+[node name="StartPosition" type="Marker2D" parent="."]
+position = Vector2(576, 320)
+
+[node name="BGM" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_apnxy")
+
+[node name="Paddle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_b7k7q")
+
+[node name="Wall" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_ykigm")
+
+[node name="Score" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gt41l")
+
+[connection signal="body_exited" from="Field" to="." method="_on_field_body_exited"]
